@@ -1,1 +1,2 @@
 *.gguf filter=lfs diff=lfs merge=lfs -text
+Dolphin3.0-Llama3.1-8B-Q4_K_M.gguf.part_* filter=lfs diff=lfs merge=lfs -text
