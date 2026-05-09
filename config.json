@@ -1,0 +1,18 @@
+{
+  "model_name": "Dolphin 3.0 R1 Mistral 24B",
+  "huggingface_id": "dphn/Dolphin3.0-R1-Mistral-24B",
+  "base_model": "mistralai/Mistral-Small-24B-Base-2501",
+  "chat_template": "ChatML",
+  "recommended_params": {
+    "temperature": 0.1,
+    "top_p": 0.9,
+    "max_tokens": 4096
+  },
+  "capabilities": [
+    "reasoning",
+    "coding",
+    "math",
+    "agentic",
+    "function-calling"
+  ]
+}
