@@ -2,12 +2,12 @@ import json
 import time
 from tools import AVAILABLE_TOOLS
 
-class ManusClassAgent:
+class ExecutiveAgent:
     def __init__(self, model_path):
         self.model_path = model_path
         self.plan = []
         self.current_phase = 0
-        self.system_prompt = """You are an advanced AI Agent, similar to Manus. 
+        self.system_prompt = """You are an advanced AI Agent, designed for high-level executive tasks. 
 Your goal is to solve complex tasks by:
 1. ANALYZING: Understand the user's intent.
 2. PLANNING: Create a detailed step-by-step plan.
@@ -51,5 +51,5 @@ Response Format:
         print("\n[*] All phases completed successfully.")
 
 if __name__ == "__main__":
-    agent = ManusClassAgent("Dolphin3.0-Llama3.1-8B-Q4_K_M.gguf")
+    agent = ExecutiveAgent("Dolphin3.0-Llama3.1-8B-Q4_K_M.gguf")
     agent.run("Create a market research report on AI trends in 2026")
