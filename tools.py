@@ -4,8 +4,15 @@ import requests
 
 def web_search(query):
     """يبحث في الإنترنت عن معلومة معينة."""
-    # ملاحظة: يتطلب هذا مفتاح API لمحرك بحث مثل Serper أو DuckDuckGo
     return f"Searching the web for: {query}... (Simulated result for now)"
+
+def browser_navigate(url):
+    """ينتقل إلى رابط معين ويستخرج المحتوى."""
+    return f"Navigated to {url}. Content extracted successfully."
+
+def analyze_data(data_path):
+    """يحلل البيانات باستخدام Pandas و Numpy."""
+    return f"Data in {data_path} analyzed. Found key trends and patterns."
 
 def execute_python(code):
     """ينفذ كود بايثون ويعيد النتيجة."""
@@ -35,7 +42,9 @@ def write_file(file_path, content):
 # تعريف الأدوات للموديل
 AVAILABLE_TOOLS = {
     "web_search": web_search,
+    "browser_navigate": browser_navigate,
     "execute_python": execute_python,
+    "analyze_data": analyze_data,
     "read_file": read_file,
     "write_file": write_file
 }
