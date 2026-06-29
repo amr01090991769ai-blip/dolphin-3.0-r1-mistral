@@ -1,18 +1,15 @@
 {
-  "model_name": "Dolphin 3.0 R1 Mistral 24B",
-  "huggingface_id": "dphn/Dolphin3.0-R1-Mistral-24B",
-  "base_model": "mistralai/Mistral-Small-24B-Base-2501",
-  "chat_template": "ChatML",
-  "recommended_params": {
-    "temperature": 0.1,
-    "top_p": 0.9,
-    "max_tokens": 4096
-  },
-  "capabilities": [
-    "reasoning",
-    "coding",
-    "math",
-    "agentic",
-    "function-calling"
-  ]
+  "backend": "auto",
+  "openai_base_url": null,
+  "model": "gpt-4o-mini",
+  "hf_model_id": null,
+  "gguf_path": null,
+  "temperature": 0.1,
+  "top_p": 0.9,
+  "max_tokens": 2048,
+  "max_agent_steps": 12,
+  "workspace": "workspace",
+  "allow_code_exec": true,
+  "code_exec_timeout": 15,
+  "allow_network_tools": true
 }

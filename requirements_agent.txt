@@ -1,4 +1,0 @@
-llama-cpp-python
-requests
-pandas
-numpy
