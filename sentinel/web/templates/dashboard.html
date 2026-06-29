@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — منصة الذكاء الاصطناعي الموحدة</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#131a2b; --panel2:#1b2640; --accent:#3b82f6;
+    --accent2:#22d3ee; --ok:#22c55e; --warn:#f59e0b; --crit:#ef4444;
+    --text:#e5e9f0; --muted:#8b97b0; --border:#243049;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Tahoma,system-ui,sans-serif;
+       background:linear-gradient(160deg,#0b0f1a,#0d1322);color:var(--text);min-height:100vh}
+  header{padding:20px 28px;border-bottom:1px solid var(--border);display:flex;
+         align-items:center;gap:14px;background:rgba(19,26,43,.6);backdrop-filter:blur(8px);
+         position:sticky;top:0;z-index:10}
+  .logo{width:38px;height:38px;border-radius:10px;
+        background:linear-gradient(135deg,var(--accent),var(--accent2));
+        display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+  h1{font-size:20px;margin:0}
+  .sub{color:var(--muted);font-size:13px}
+  .status-pill{margin-inline-start:auto;font-size:12px;padding:6px 12px;border-radius:20px;
+        background:var(--panel2);border:1px solid var(--border)}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px}
+  .tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+  .tab{padding:10px 18px;border-radius:10px;cursor:pointer;background:var(--panel);
+       border:1px solid var(--border);color:var(--muted);font-weight:600;transition:.2s}
+  .tab.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:18px}
+  textarea,input{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);
+       border-radius:10px;padding:12px;font-size:14px;font-family:inherit;resize:vertical}
+  textarea{min-height:90px}
+  button.run{margin-top:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+       color:#fff;border:0;padding:11px 22px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+  button.run:hover{filter:brightness(1.1)}
+  .out{margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+       padding:16px;white-space:pre-wrap;font-family:'Consolas',monospace;font-size:13px;
+       max-height:460px;overflow:auto;line-height:1.6}
+  .hidden{display:none}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .toolcard{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .toolcard b{color:var(--accent2)}
+  .step{border-inline-start:3px solid var(--accent);padding:8px 12px;margin:8px 0;background:var(--panel2);border-radius:8px}
+  .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700}
+  .b-crit{background:var(--crit)}.b-high{background:#f97316}.b-med{background:var(--warn);color:#000}
+  .b-low{background:#64748b}.b-info{background:#334155}
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;
+        border-radius:50%;animation:r .7s linear infinite;vertical-align:middle}
+  @keyframes r{to{transform:rotate(360deg)}}
+  .note{font-size:12px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">S</div>
+  <div>
+    <h1>Sentinel</h1>
+    <div class="sub">منصة ذكاء اصطناعي موحدة · أمن دفاعي · برمجة · تحليل · أتمتة</div>
+  </div>
+  <div class="status-pill" id="statusPill">… جاري الاتصال</div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="agent">🤖 الوكيل الذكي</div>
+    <div class="tab" data-tab="chat">💬 محادثة</div>
+    <div class="tab" data-tab="scan">🛡️ فحص أمني</div>
+    <div class="tab" data-tab="tools">🧰 الأدوات</div>
+  </div>
+
+  <!-- AGENT -->
+  <div class="card tabpane" id="pane-agent">
+    <label class="label">اكتب هدفاً والوكيل سينفذه خطوة بخطوة باستخدام الأدوات (ReAct):</label>
+    <textarea id="agentGoal" placeholder="مثال: احسب 23*19 ثم احفظ الناتج في ملف result.txt"></textarea>
+    <button class="run" onclick="runAgent()">تشغيل الوكيل</button>
+    <div class="out" id="agentOut">في انتظار الهدف…</div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="card tabpane hidden" id="pane-chat">
+    <label class="label">محادثة مباشرة مع الموديل:</label>
+    <textarea id="chatPrompt" placeholder="اسأل أي شيء…"></textarea>
+    <button class="run" onclick="runChat()">إرسال</button>
+    <div class="out" id="chatOut">…</div>
+  </div>
+
+  <!-- SCAN -->
+  <div class="card tabpane hidden" id="pane-scan">
+    <label class="label">مسار للفحص الأمني الدفاعي (داخل مساحة العمل):</label>
+    <input id="scanPath" value="." placeholder="." />
+    <button class="run" onclick="runScan()">فحص</button>
+    <div class="out" id="scanOut">…</div>
+    <div class="note">يكتشف: تسريب المفاتيح، أنماط كود خطرة (eval/shell)، تشفير ضعيف، اعتمادات غير مثبتة، وإعدادات غير آمنة.</div>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="card tabpane hidden" id="pane-tools">
+    <label class="label">الأدوات المتاحة للوكيل:</label>
+    <div class="grid" id="toolsGrid">…</div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const API = location.origin;
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelectorAll('.tabpane').forEach(p=>p.classList.add('hidden'));
+    $('#pane-'+t.dataset.tab).classList.remove('hidden');
+  };
+});
+
+async function post(path, body){
+  const r = await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  return r.json();
+}
+
+async function loadStatus(){
+  try{
+    const s = await (await fetch(API+'/api/status')).json();
+    $('#statusPill').textContent = 'محرك: '+s.llm.backend+' · أدوات: '+s.tools.length;
+    const g = $('#toolsGrid'); g.innerHTML='';
+    s.tools.forEach(t=>{
+      const d=document.createElement('div'); d.className='toolcard';
+      d.innerHTML='<b>'+t.name+'</b><div class="sub">'+t.description+'</div>';
+      g.appendChild(d);
+    });
+  }catch(e){ $('#statusPill').textContent='غير متصل'; }
+}
+
+async function runAgent(){
+  const goal=$('#agentGoal').value.trim(); if(!goal)return;
+  $('#agentOut').innerHTML='<span class="spin"></span> الوكيل يفكر…';
+  const r = await post('/api/agent',{goal});
+  let html='';
+  (r.steps||[]).forEach((s,i)=>{
+    html+='<div class="step"><b>الخطوة '+(i+1)+'</b>';
+    if(s.thought) html+='<div>🧠 '+esc(s.thought)+'</div>';
+    if(s.action) html+='<div>⚙️ <code>'+esc(s.action)+'('+esc(s.action_input)+')</code></div>';
+    if(s.observation) html+='<div>👁️ '+esc(s.observation)+'</div>';
+    html+='</div>';
+  });
+  html+='<div class="step" style="border-color:var(--ok)"><b>✅ الإجابة النهائية</b><div>'+esc(r.final_answer||'')+'</div></div>';
+  $('#agentOut').innerHTML=html;
+}
+
+async function runChat(){
+  const prompt=$('#chatPrompt').value.trim(); if(!prompt)return;
+  $('#chatOut').innerHTML='<span class="spin"></span> …';
+  const r=await post('/api/chat',{prompt});
+  $('#chatOut').textContent=r.reply||r.error||'';
+}
+
+async function runScan(){
+  const path=$('#scanPath').value.trim()||'.';
+  $('#scanOut').innerHTML='<span class="spin"></span> جاري الفحص…';
+  const r=await post('/api/scan',{path});
+  let html='درجة الخطر: <b>'+r.risk_score+'/100</b> · ملفات: '+r.files_scanned+'\n\n';
+  const c=r.counts||{};
+  html+='الإحصاء: '+Object.entries(c).map(([k,v])=>k+'='+v).join(' · ')+'\n\n';
+  (r.findings||[]).slice(0,60).forEach(f=>{
+    html+='<span class="badge b-'+f.severity.slice(0,4)+'">'+f.severity.toUpperCase()+'</span> '+esc(f.title)+' ('+esc(f.file)+':'+f.line+')\n   ↳ '+esc(f.remediation)+'\n\n';
+  });
+  if(!(r.findings||[]).length) html+='لا توجد مشاكل. ✔';
+  $('#scanOut').innerHTML=html;
+}
+
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+loadStatus();
+</script>
+</body>
+</html>

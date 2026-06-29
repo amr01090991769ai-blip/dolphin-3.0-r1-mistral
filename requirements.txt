@@ -1,5 +1,17 @@
-transformers>=4.45.0
-torch>=2.0.0
-accelerate>=0.26.0
-sentencepiece
-protobuf
+# Sentinel core runs with ZERO third-party dependencies (stdlib only).
+# The packages below are OPTIONAL and only needed for specific LLM backends.
+
+# --- Optional: local Transformers backend (SENTINEL_HF_MODEL_ID) ---
+# torch>=2.1.0
+# transformers>=4.44.0
+# accelerate>=0.30.0
+
+# --- Optional: local GGUF backend (SENTINEL_GGUF_PATH) ---
+# llama-cpp-python>=0.2.90
+
+# --- Optional: richer data analysis ---
+# pandas>=2.0.0
+# numpy>=1.26.0
+
+# The OpenAI-compatible backend uses only the standard library (urllib),
+# so no 'openai' package is required.
